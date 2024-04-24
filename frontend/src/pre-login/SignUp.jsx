@@ -8,48 +8,44 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [reEnterPassword, setReEnterPassword] = useState("");
   const navigate = useNavigate();
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     if (password !== reEnterPassword) {
       alert("Password is not matching with ReEnterPassword");
       return;
     }
-    if (!name || !email || !role || !password) {
+    if (!name || !email || !role || !username || !password) {
       alert("All fields are mandatory.");
       return;
     }
-    axios
-      .get(`http://localhost:5555/users/${email}/${role}`)
-      .then((response) => {
-        // first check if user exists
-        if (response.data) {
-          alert(`Email already associated with another ${role}.`);
-          return;
-        }
-        // if user doesn't already exists then create user
-        const user = {
-          name: name,
-          email: email,
-          password: password,
-          role: role,
-        };
-        axios
-          .post("http://localhost:5555/users/", user)
-          .then((response) => {
-            console.log(response.data);
-            alert("Sign Up Successful!! Please Login to continue...");
-            navigate("/");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      // first check if any ${role} already has the given username
+      let response = await axios.get(
+        `http://localhost:5555/users/roleAndUsername/${role}/${username}`
+      );
+      if (response.data) {
+        alert(`Username already associated with another ${role}.`);
+        return;
+      }
+      // if user doesn't already exists then create user
+      const user = {
+        name: name,
+        email: email,
+        username: username,
+        password: password,
+        role: role,
+      };
+      response = await axios.post("http://localhost:5555/users/", user);
+      console.log(response.data);
+      alert("Sign Up Successful!! Please Login to continue...");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="container">
@@ -92,11 +88,11 @@ const SignUp = () => {
         <div className="form-group">
           <label>Set Username</label>
           <input
-            type="password"
+            type="text"
             className="form-control"
             placeholder="Enter Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <div className="form-group">

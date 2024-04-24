@@ -3,6 +3,17 @@ import { Participation } from "../models/participationModel.js";
 
 const router = express.Router();
 
+// to get all the participations
+router.get("/", async (request, response) => {
+  try {
+    const participations = await Participation.find({});
+    return response.send(participations);
+  } catch (error) {
+    console.log(error.message);
+    return response.send(error.message);
+  }
+});
+
 // router.post("/", async (request, response) => {
 //   try {
 //     if (!request.body.eventId || !request.body.participantId) {
@@ -20,15 +31,6 @@ const router = express.Router();
 //   }
 // });
 
-// router.get("/", async (request, response) => {
-//   try {
-//     const participations = await Participation.find({});
-//     return response.send(participations);
-//   } catch (error) {
-//     console.log(error.message);
-//     return response.send(error.message);
-//   }
-// });
 
 // router.get("/eventId/:eventId", async (request, response) => {
 //   try {

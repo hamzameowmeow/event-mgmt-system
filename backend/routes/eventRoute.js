@@ -3,6 +3,17 @@ import { Event } from "../models/eventModel.js";
 
 const router = express.Router();
 
+// to get all the events
+router.get("/", async (request, response) => {
+  try {
+    const events = await Event.find({});
+    return response.send(events);
+  } catch (error) {
+    console.log(error.message);
+    return response.send(error.message);
+  }
+});
+
 // router.post("/", async (request, response) => {
 //   try {
 //     if (
@@ -27,15 +38,6 @@ const router = express.Router();
 //   }
 // });
 
-// router.get("/", async (request, response) => {
-//   try {
-//     const events = await Event.find({});
-//     return response.send(events);
-//   } catch (error) {
-//     console.log(error.message);
-//     return response.send(error.message);
-//   }
-// });
 
 // router.get("/:id", async (request, response) => {
 //   try {
