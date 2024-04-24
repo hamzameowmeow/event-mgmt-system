@@ -7,27 +7,28 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [role, setRole] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    if (!role || !email || !password) {
+    if (!role || !username || !password) {
       alert("All fields are necessary.");
       return;
     }
-    axios
-      .get(`http://localhost:5555/users/${email}/${role}`)
-      .then((response) => {
-        if (!response.data || response.data.password !== password) {
-          alert("Invalid Credentials!");
-          return;
-        }
-        navigate(`/${role}/${response.data._id}`);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const response = await axios.get(
+        `http://localhost:5555/users/roleAndUsername/${role}/${username}`
+      );
+      if (!response.data || response.data.password !== password) {
+        alert("Invalid Credentials!");
+        return;
+      }
+      console.log(response.data);
+      // navigate(`/${role}/${response.data._id}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="container">
@@ -35,10 +36,9 @@ const Login = () => {
       <form>
         <h2>Login</h2>
         <div className="form-group">
-          <label htmlFor="inputRole">Select Role</label>
+          <label>Select Role</label>
           <select
             className="form-control"
-            id="inputRole"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
@@ -49,25 +49,20 @@ const Login = () => {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="inputEmail">Email address</label>
+          <label>Username</label>
           <input
             type="email"
             className="form-control"
-            id="inputEmail"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
-          <small id="emailHelp" className="form-text text-muted">
-            We'll never share your email with anyone else.
-          </small>
         </div>
         <div className="form-group">
-          <label htmlFor="inputPassword">Password</label>
+          <label>Password</label>
           <input
             type="password"
             className="form-control"
-            id="inputPassword"
             placeholder="Enter Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
