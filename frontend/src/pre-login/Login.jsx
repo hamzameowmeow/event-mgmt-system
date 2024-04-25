@@ -25,7 +25,7 @@ const Login = () => {
         return;
       }
       console.log(response.data);
-      // navigate(`/${role}/${response.data._id}`);
+      navigate(`/${role}/${response.data._id}`);
     } catch (error) {
       console.log(error);
     }

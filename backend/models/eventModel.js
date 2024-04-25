@@ -1,7 +1,7 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 const commentSchema = mongoose.Schema({
-  moderatorEmail: String,
+  moderatorId: String,
   time: Date,
   comment: String,
 });
@@ -14,7 +14,7 @@ const notificationSchema = mongoose.Schema({
 const eventSchema = mongoose.Schema(
   {
     name: String,
-    time: Date,
+    date: Date,
     status: String,
     comments: [commentSchema],
     notifications: [notificationSchema],

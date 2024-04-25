@@ -26,6 +26,18 @@ router.get("/roleAndUsername/:role/:username", async (request, response) => {
   }
 });
 
+// to get the details of a user, given their id
+router.get("/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const user = await User.findById(id);
+    return response.send(user);
+  } catch (error) {
+    console.log(error.message);
+    return response.send(error.message);
+  }
+});
+
 // to add a user to the database
 router.post("/", async (request, response) => {
   try {
@@ -52,27 +64,5 @@ router.post("/", async (request, response) => {
     return response.send(error.message);
   }
 });
-
-// router.get("/:email/:role", async (request, response) => {
-//   try {
-//     const { email, role } = request.params;
-//     const user = await User.findOne({ email: email, role: role });
-//     return response.send(user);
-//   } catch (error) {
-//     console.log(error.message);
-//     return response.send(error.message);
-//   }
-// });
-
-// router.get("/:id", async (request, response) => {
-//   try {
-//     const { id } = request.params;
-//     const user = await User.findById(id);
-//     return response.send(user);
-//   } catch (error) {
-//     console.log(error.message);
-//     return response.send(error.message);
-//   }
-// });
 
 export default router;
