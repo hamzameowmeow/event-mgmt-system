@@ -1,21 +1,42 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import OrganizerNavbar from "./components/OrganizerNavbar";
-import OrganizerFooter from "./components/OrganizerFooter";
+import ModeratorNavbar from "./components/ModeratorNavBar";
+import ModeratorFooter from "./components/ModeratorFooter";
 import Spinner from "../components/Spinner";
 
 const EventModal = ({ event }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const closeRef = useRef();
-  const handleEditEvent = () => {
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  ///
+  useEffect(() => {
+    const fun = async () => {
+      try {
+        const temp = await Promise.all(
+          event.comments.map(async (e) => {
+            const res = await axios.get(
+              `http://localhost:5555/users/${e.moderatorId}`
+            );
+            return {
+              ...e,
+              moderatorName: res.data.name,
+            };
+          })
+        );
+        setComments(temp);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fun();
+  }, []);
+  const handleViewMore = () => {
     closeRef.current.click();
-    navigate(`/organizer/${id}/edit-event/${event._id}`);
-  };
-  const handleShowParticipants = () => {
-    closeRef.current.click();
-    navigate(`/organizer/${id}/show-event/${event._id}`);
+    navigate(`/moderator/${id}/show-event/${event._id}`);
   };
   return (
     <>
@@ -87,24 +108,26 @@ const EventModal = ({ event }) => {
                 <hr />
               </form>
               <h5>Moderator Comments</h5>
-              {event.comments.length === 0 ? (
+              {loading ? (
+                <Spinner />
+              ) : event.comments.length === 0 ? (
                 <div>No comments from moderators till now.</div>
               ) : (
                 <table className="table">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">Moderator Email</th>
+                      <th scope="col">Moderator Name</th>
                       <th scope="col">Time</th>
                       <th scope="col">Comment</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {event.comments.map((e, index) => (
+                    {comments.map((e, index) => (
                       <tr key={index}>
                         <th scope="row">{index + 1}</th>
-                        <td>{e.moderatorId}</td>
-                        <td>{e.time}</td>
+                        <td>{e.moderatorName}</td>
+                        <td>{new Date(e.time).toLocaleString()}</td>
                         <td>{e.comment}</td>
                       </tr>
                     ))}
@@ -120,15 +143,8 @@ const EventModal = ({ event }) => {
               >
                 Close
               </button>
-              <button onClick={handleEditEvent} className="btn btn-info">
-                Request Edit in Event
-              </button>
-              <button
-                onClick={handleShowParticipants}
-                className="btn btn-primary"
-                disabled={event.status === "pending"}
-              >
-                Show Participants
+              <button onClick={handleViewMore} className="btn btn-info">
+                View More
               </button>
             </div>
           </div>
@@ -138,61 +154,74 @@ const EventModal = ({ event }) => {
   );
 };
 
-// main component of this page
-const OrganizerMyEvents = () => {
+const ModeratorViewPendingEvents = () => {
   const { id } = useParams();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  console.log(events, loading);
   useEffect(() => {
     const fun = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5555/events/organizerId/${id}`
-        );
-        setEvents(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
+      const response = await axios.get(`http://localhost:5555/events`);
+      const temp = await Promise.all(
+        response.data
+          .filter((e) => e.status === "pending")
+          .map(async (e) => {
+            const response = await axios.get(
+              `http://localhost:5555/users/${e.organizerId}`
+            );
+            return {
+              ...e,
+              organizerName: response.data.name,
+              organizerEmail: response.data.email,
+            };
+          })
+      );
+      setEvents(temp);
+      setLoading(false);
     };
     fun();
   }, []);
   return (
     <div className="container">
-      <OrganizerNavbar id={id} />
+      <ModeratorNavbar id={id} />
       {loading ? (
         <Spinner />
-      ) : events.length === 0 ? (
-        <div>No events are found to be created by you.</div>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Event Name</th>
-              <th scope="col">Time</th>
-              <th scope="col">Status</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map((e, index) => (
-              <tr key={index}>
-                <th scope="row">{index + 1}</th>
-                <td>{e.name}</td>
-                <td>{(new Date(e.date)).toLocaleString().split(",")[0]}</td>
-                <td>{e.status}</td>
-                <td>
-                  <EventModal event={e} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <>
+          <h2>Pending Events</h2>
+          {events.length === 0 ? (
+            <div>No events are pending.</div>
+          ) : (
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Event Name</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Organizer Name</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {events.map((e, index) => (
+                  <tr key={index}>
+                    <th scope="row">{index + 1}</th>
+                    <td>{e.name}</td>
+                    <td>{new Date(e.date).toLocaleString().split(",")[0]}</td>
+                    <td>{e.organizerName}</td>
+                    <td>
+                      <EventModal event={e} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </>
       )}
-      <OrganizerFooter id={id} />
+      <ModeratorFooter id={id} />
     </div>
   );
 };
 
-export default OrganizerMyEvents;
+export default ModeratorViewPendingEvents;

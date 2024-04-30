@@ -10,6 +10,9 @@ import OrganizerCreateEvent from "./organizer/OrganizerCreateEvent";
 import OrganizerMyEvents from "./organizer/OrganizerMyEvents";
 import OrganizerEditEvent from "./organizer/OrganizerEditEvent";
 import OrganizerShowEvent from "./organizer/OrganizerShowEvent";
+import ModeratorHome from "./moderator/ModeratorHome";
+import ModeratorViewPendingEvents from "./moderator/ModeratorViewPendingEvents";
+import ModeratorShowEvent from "./moderator/ModeratorShowEvent";
 
 const App = () => {
   return (
@@ -32,6 +35,15 @@ const App = () => {
       <Route
         path="/organizer/:id/show-event/:eventId"
         element={<OrganizerShowEvent />}
+      />
+      <Route path="/moderator/:id" element={<ModeratorHome />} />
+      <Route
+        path="/moderator/:id/view-pending-events"
+        element={<ModeratorViewPendingEvents />}
+      />
+      <Route
+        path="/moderator/:id/show-event/:eventId"
+        element={<ModeratorShowEvent />}
       />
     </Routes>
   );
