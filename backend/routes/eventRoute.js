@@ -14,6 +14,18 @@ router.get("/", async (request, response) => {
   }
 });
 
+// to get an event data using id
+router.get("/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const event = await Event.findById(id);
+    return response.send(event);
+  } catch (error) {
+    console.log(error.message);
+    return response.send(error.message);
+  }
+});
+
 // to create a new event
 router.post("/", async (request, response) => {
   try {
@@ -61,16 +73,5 @@ router.put("/:id", async (request, response) => {
     response.send(error.message);
   }
 });
-
-// router.get("/:id", async (request, response) => {
-//   try {
-//     const { id } = request.params;
-//     const event = await Event.findById(id);
-//     return response.send(event);
-//   } catch (error) {
-//     console.log(error.message);
-//     return response.send(error.message);
-//   }
-// });
 
 export default router;

@@ -8,6 +8,8 @@ import SignUp from "./pre-login/SignUp";
 import OrganizerHome from "./organizer/OrganizerHome";
 import OrganizerCreateEvent from "./organizer/OrganizerCreateEvent";
 import OrganizerMyEvents from "./organizer/OrganizerMyEvents";
+import OrganizerEditEvent from "./organizer/OrganizerEditEvent";
+import OrganizerShowEvent from "./organizer/OrganizerShowEvent";
 
 const App = () => {
   return (
@@ -23,6 +25,14 @@ const App = () => {
         element={<OrganizerCreateEvent />}
       />
       <Route path="/organizer/:id/my-events" element={<OrganizerMyEvents />} />
+      <Route
+        path="/organizer/:id/edit-event/:eventId"
+        element={<OrganizerEditEvent />}
+      />
+      <Route
+        path="/organizer/:id/show-event/:eventId"
+        element={<OrganizerShowEvent />}
+      />
     </Routes>
   );
 };
