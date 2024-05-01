@@ -13,6 +13,9 @@ import OrganizerShowEvent from "./organizer/OrganizerShowEvent";
 import ModeratorHome from "./moderator/ModeratorHome";
 import ModeratorViewPendingEvents from "./moderator/ModeratorViewPendingEvents";
 import ModeratorShowEvent from "./moderator/ModeratorShowEvent";
+import ParticipantHome from "./participant/ParticipantHome";
+import ParticipantMyEvents from "./participant/ParticipantMyEvents";
+import ParticipantUpcomingEvents from "./participant/ParticipantUpcomingEvents";
 
 const App = () => {
   return (
@@ -44,6 +47,15 @@ const App = () => {
       <Route
         path="/moderator/:id/show-event/:eventId"
         element={<ModeratorShowEvent />}
+      />
+      <Route path="/participant/:id" element={<ParticipantHome />} />
+      <Route
+        path="/participant/:id/my-events"
+        element={<ParticipantMyEvents />}
+      />
+      <Route
+        path="/participant/:id/upcoming-events"
+        element={<ParticipantUpcomingEvents />}
       />
     </Routes>
   );

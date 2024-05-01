@@ -14,8 +14,21 @@ router.get("/", async (request, response) => {
   }
 });
 
+// to get all the events in which a participant has participated
+router.get("/participantId/:participantId", async (request, response) => {
+  try {
+    const { participantId } = request.params;
+    const participation = await Participation.find({
+      participantId: participantId,
+    });
+    return response.send(participation);
+  } catch (error) {
+    console.log(error.message);
+    return response.send(error.message);
+  }
+});
 // router.post("/", async (request, response) => {
-//   try {
+  //   try {
 //     if (!request.body.eventId || !request.body.participantId) {
 //       return response.send("Insufficient fields. Send all fields");
 //     }
@@ -43,18 +56,6 @@ router.get("/", async (request, response) => {
 //   }
 // });
 
-// router.get("/participantId/:participantId", async (request, response) => {
-//   try {
-//     const { participantId } = request.params;
-//     const participation = await Participation.find({
-//       participantId: participantId,
-//     });
-//     return response.send(participation);
-//   } catch (error) {
-//     console.log(error.message);
-//     return response.send(error.message);
-//   }
-// });
 
 // router.delete("/:id", async (request, response) => {
 //   try {
