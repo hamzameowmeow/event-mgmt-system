@@ -1,3 +1,12 @@
 .me-md-2 {
   margin-right: 0.5rem !important;
 }
+
+body {
+  background-color: #fff8ea;
+  color: black;
+}
+
+.homeImg {
+  /* border-radius: 500px; */
+}

@@ -31,52 +31,55 @@ const Login = () => {
     }
   };
   return (
-    <div className="container">
+    <>
+      {" "}
       <Navbar />
-      <form>
-        <h2>Login</h2>
-        <div className="form-group">
-          <label>Select Role</label>
-          <select
-            className="form-control"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <option value="">Select an input</option>
-            <option value="participant">Participant</option>
-            <option value="organizer">Organizer</option>
-            <option value="moderator">Moderator</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Username</label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Enter username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Enter Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button onClick={handleSignIn} className="btn btn-primary">
-          Sign In
-        </button>
-        <p>
-          <Link to="/signup">Sign Up</Link>
-        </p>
-      </form>
+      <div className="container mt-4">
+        <form>
+          <h2>Login</h2>
+          <div className="form-group">
+            <label>Select Role</label>
+            <select
+              className="form-control"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="">Select an input</option>
+              <option value="participant">Participant</option>
+              <option value="organizer">Organizer</option>
+              <option value="moderator">Moderator</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Username</label>
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Enter username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Enter Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button onClick={handleSignIn} className="btn btn-primary">
+            Sign In
+          </button>
+          <p>
+            <Link to="/signup">Sign Up</Link>
+          </p>
+        </form>
+      </div>
       <Footer />
-    </div>
+    </>
   );
 };
 

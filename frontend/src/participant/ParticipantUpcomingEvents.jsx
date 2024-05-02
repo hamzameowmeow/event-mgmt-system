@@ -90,7 +90,7 @@ const ParticipateModal = ({ event }) => {
 const UpcomingEvents = () => {
   const { id } = useParams();
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fun = async () => {
       try {
@@ -141,40 +141,45 @@ const UpcomingEvents = () => {
     fun();
   }, []);
   return (
-    <div className="container">
+    <>
       <ParticipantNavbar />
-      {loading ? (
-        <Spinner />
-      ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Event Name</th>
-              <th scope="col">Date</th>
-              <th scope="col">Organizer Name</th>
-              <th scope="col">Organizer Email</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map((e, index) => (
-              <tr key={index}>
-                <th scope="row">{index + 1}</th>
-                <td>{e.name}</td>
-                <td>{new Date(e.date).toLocaleDateString()}</td>
-                <td>{e.organizerName}</td>
-                <td>{e.organizerEmail}</td>
-                <td>
-                  <ParticipateModal event={e} />
-                </td>
+      <div className="container mt-4">
+        <h2>Upcoming Events</h2>
+        {loading ? (
+          <Spinner />
+        ) : events.length === 0 ? (
+          <div>No upcoming events.</div>
+        ) : (
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Event Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Organizer Name</th>
+                <th scope="col">Organizer Email</th>
+                <th scope="col">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {events.map((e, index) => (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{e.name}</td>
+                  <td>{new Date(e.date).toLocaleDateString()}</td>
+                  <td>{e.organizerName}</td>
+                  <td>{e.organizerEmail}</td>
+                  <td>
+                    <ParticipateModal event={e} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
       <ParticipantFooter />
-    </div>
+    </>
   );
 };
 

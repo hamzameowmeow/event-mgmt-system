@@ -16,6 +16,7 @@ import ModeratorShowEvent from "./moderator/ModeratorShowEvent";
 import ParticipantHome from "./participant/ParticipantHome";
 import ParticipantMyEvents from "./participant/ParticipantMyEvents";
 import ParticipantUpcomingEvents from "./participant/ParticipantUpcomingEvents";
+import ParticipantShowEvent from "./participant/ParticipantShowEvent";
 
 const App = () => {
   return (
@@ -56,6 +57,10 @@ const App = () => {
       <Route
         path="/participant/:id/upcoming-events"
         element={<ParticipantUpcomingEvents />}
+      />
+      <Route
+        path="/participant/:id/show-event/:eventId"
+        element={<ParticipantShowEvent/>}
       />
     </Routes>
   );
