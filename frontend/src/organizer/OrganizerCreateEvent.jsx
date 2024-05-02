@@ -81,6 +81,21 @@ const OrganizerCreateEvent = () => {
             max={maxDate}
           />
         </div>
+        <div className="form-group">
+          <label htmlFor="exampleFormControlFile1">
+            Upload Your Application
+          </label>
+          <input
+            type="file"
+            className="form-control-file"
+            id="exampleFormControlFile1"
+          />
+          <small>
+            Remember to follow all the guidelines. See the sample application
+            for reference.
+          </small>
+        </div>
+
         <button onClick={handleCreateEvent} className="btn btn-primary">
           Create Event
         </button>

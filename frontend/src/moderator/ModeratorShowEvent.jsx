@@ -328,6 +328,14 @@ const ModeratorShowEvent = () => {
             >
               Go Back
             </Link>
+            <button className="btn btn-outline-primary me-md-2 px-4">
+              <a
+                href="https://www.mandurah.wa.gov.au/-/media/files/com/downloads/explore/events/organisers/events-application-form.pdf"
+                target="blank"
+              >
+                View Application Form
+              </a>
+            </button>
             <ModeratorCommentsModal />
             <AddCommentModal />
             <ApproveEventModal event={event} />

@@ -11,7 +11,7 @@ const ListOfParticipantModal = () => {
   const { eventId } = useParams();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  console.log(participants);
   useEffect(() => {
     const fun = async () => {
       try {
@@ -24,7 +24,7 @@ const ListOfParticipantModal = () => {
                 await axios.get(`http://localhost:5555/users/${participantId}`)
             )
         );
-        setParticipants(p);
+        setParticipants(p.map((e) => e.data));
         setLoading(false);
       } catch (error) {
         console.log(error);
