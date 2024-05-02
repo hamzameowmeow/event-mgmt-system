@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ModeratorNavBar from "./components/ModeratorNavBar";
 import ModeratorFooter from "./components/ModeratorFooter";
@@ -183,12 +183,93 @@ const AddCommentModal = () => {
   );
 };
 
+const ApproveEventModal = ({ event }) => {
+  const { id, eventId } = useParams();
+  const closeRef = useRef();
+  const navigate = useNavigate();
+  const handleApprove = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5555/events/${eventId}`,
+        {
+          ...event,
+          status: "approved",
+        }
+      );
+      console.log(response.data);
+      alert("Event approved successfully!");
+      closeRef.current.click();
+      navigate(`/moderator/${id}/view-pending-events`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return (
+    <>
+      {/* Button trigger modal */}
+      <button
+        type="button"
+        className="btn btn-primary px-4"
+        data-toggle="modal"
+        data-target={`#staticBackdrop${eventId}`}
+      >
+        Approve Event
+      </button>
+      {/* Modal */}
+      <div
+        className="modal fade"
+        id={`staticBackdrop${eventId}`}
+        data-backdrop="static"
+        data-keyboard="false"
+        tabIndex={-1}
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="staticBackdropLabel">
+                {event.name}
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                ref={closeRef}
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="modal-body">Do you wish to approve this event?</div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                No
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleApprove}
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 const ModeratorShowEvent = () => {
   const { id, eventId } = useParams();
   // useState and useEffect
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   ///////////
   useEffect(() => {
     const fun = async () => {
@@ -204,22 +285,6 @@ const ModeratorShowEvent = () => {
     };
     fun();
   }, []);
-  const handleApprove = async (index) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:5555/events/${eventId}`,
-        {
-          ...event,
-          status: "approved",
-        }
-      );
-      console.log(response.data);
-      alert("Event approved successfully!");
-      navigate(`/moderator/${id}/view-pending-events`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <div className="container">
       <ModeratorNavBar />
@@ -265,13 +330,7 @@ const ModeratorShowEvent = () => {
             </Link>
             <ModeratorCommentsModal />
             <AddCommentModal />
-            <button
-              type="button"
-              className="btn btn-primary px-4"
-              onClick={handleApprove}
-            >
-              Approve Event
-            </button>
+            <ApproveEventModal event={event} />
           </div>
         </div>
       )}

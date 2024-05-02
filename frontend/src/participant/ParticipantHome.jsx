@@ -4,20 +4,7 @@ import ParticipantFooter from "./components/ParticipantFooter";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/Spinner";
-
-const UserDetails = ({ user }) => {
-  return (
-    <div>
-      <h2>Hello, {user.name}</h2>
-      <h3>{user.role}</h3>
-      {Object.keys(user).map((key, index) => (
-        <div key={index}>
-          {key}: {user[key]}
-        </div>
-      ))}
-    </div>
-  );
-};
+import UserDetails from "../components/UserDetails";
 
 const ParticipantHome = () => {
   const [user, setUser] = useState({});
