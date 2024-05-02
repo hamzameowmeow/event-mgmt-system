@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-const OrganizerFooter = ({ id }) => {
+const OrganizerFooter = () => {
+  const { id } = useParams();
   return (
     <footer className="py-3 my-4">
       <ul className="nav justify-content-center border-bottom pb-3 mb-3">

@@ -57,7 +57,7 @@ const OrganizerCreateEvent = () => {
     .split("T")[0];
   return (
     <div className="container">
-      <OrganizerNavbar id={id} />
+      <OrganizerNavbar />
       <form>
         <h2>Create Event</h2>
         <div className="form-group">
@@ -85,7 +85,7 @@ const OrganizerCreateEvent = () => {
           Create Event
         </button>
       </form>
-      <OrganizerFooter id={id} />
+      <OrganizerFooter />
     </div>
   );
 };

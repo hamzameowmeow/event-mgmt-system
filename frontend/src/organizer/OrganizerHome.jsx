@@ -5,20 +5,7 @@ import axios from "axios";
 import OrganizerNavbar from "./components/OrganizerNavbar";
 import OrganizerFooter from "./components/OrganizerFooter";
 import Spinner from "../components/Spinner";
-
-const UserDetails = ({ user }) => {
-  return (
-    <div>
-      <h2>Hello, {user.name}</h2>
-      <h3>{user.role}</h3>
-      {Object.keys(user).map((key, index) => (
-        <div key={index}>
-          {key}: {user[key]}
-        </div>
-      ))}
-    </div>
-  );
-};
+import UserDetails from "../components/UserDetails";
 
 const OrganizerHome = () => {
   const [user, setUser] = useState({});
@@ -38,9 +25,9 @@ const OrganizerHome = () => {
   }, []);
   return (
     <div className="container">
-      <OrganizerNavbar id={id} />
+      <OrganizerNavbar />
       {loading ? <Spinner /> : <UserDetails user={user} />}
-      <OrganizerFooter id={id} />
+      <OrganizerFooter />
     </div>
   );
 };

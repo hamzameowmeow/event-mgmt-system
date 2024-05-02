@@ -15,12 +15,14 @@ const ListOfParticipantModal = () => {
     const fun = async () => {
       try {
         const response = await axios.get(`http://localhost:5555/participation`);
-        const p = response.data
-          .filter((e) => e.eventId === eventId)
-          .map(
-            async ({ participantId }) =>
-              await axios.get(`http://localhost:5555/users/${participantId}`)
-          );
+        const p = await Promise.all(
+          response.data
+            .filter((e) => e.eventId === eventId)
+            .map(
+              async ({ participantId }) =>
+                await axios.get(`http://localhost:5555/users/${participantId}`)
+            )
+        );
         setParticipants(p);
         setLoading(false);
       } catch (error) {
@@ -176,7 +178,6 @@ const EventNotifications = () => {
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Date</th>
-                      <th scope="col">Time</th>
                       <th scope="col">Notification</th>
                     </tr>
                   </thead>
@@ -186,9 +187,6 @@ const EventNotifications = () => {
                         <th scope="row">{index + 1}</th>
                         <td>
                           {new Date(e.time).toLocaleString().split(", ")[0]}
-                        </td>
-                        <td>
-                          {new Date(e.time).toLocaleString().split(", ")[1]}
                         </td>
                         <td>{e.notification}</td>
                       </tr>
@@ -249,10 +247,8 @@ const SendNotification = () => {
       console.log(notifications.map((e) => e.time));
       notifications.sort((a, b) => {
         if (a.time > b.time) {
-          console.log(-1);
           return -1;
         }
-        console.log(1);
         return 1;
       });
       const response = await axios.put(
@@ -306,18 +302,22 @@ const SendNotification = () => {
               </button>
             </div>
             <div className="modal-body">
-              <div>
-                <div className="form-group">
-                  <label>Message</label>
-                  <input
-                    type="text"
-                    placeholder="Type your message here..."
-                    className="form-control"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
+              {loading ? (
+                <Spinner />
+              ) : (
+                <div>
+                  <div className="form-group">
+                    <label>Message</label>
+                    <input
+                      type="text"
+                      placeholder="Type your message here..."
+                      className="form-control"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className="modal-footer">
               <button
@@ -364,7 +364,7 @@ const OrganizerShowEvent = () => {
   }, []);
   return (
     <div className="container">
-      <OrganizerNavbar id={id} />
+      <OrganizerNavbar />
       <h2>Event Details</h2>
       {loading ? (
         <Spinner />
@@ -402,7 +402,7 @@ const OrganizerShowEvent = () => {
           </div>
         </div>
       )}
-      <OrganizerFooter id={id} />
+      <OrganizerFooter />
     </div>
   );
 };

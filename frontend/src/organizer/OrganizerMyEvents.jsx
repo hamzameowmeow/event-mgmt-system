@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import OrganizerNavbar from "./components/OrganizerNavbar";
 import OrganizerFooter from "./components/OrganizerFooter";
 import Spinner from "../components/Spinner";
+import ModeratorComments from "../components/ModeratorComments";
 
 const EventModal = ({ event }) => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const EventModal = ({ event }) => {
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
@@ -84,33 +85,9 @@ const EventModal = ({ event }) => {
                     readOnly
                   />
                 </div>
-                <hr />
               </form>
-              <h5>Moderator Comments</h5>
-              {event.comments.length === 0 ? (
-                <div>No comments from moderators till now.</div>
-              ) : (
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Moderator Email</th>
-                      <th scope="col">Time</th>
-                      <th scope="col">Comment</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {event.comments.map((e, index) => (
-                      <tr key={index}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{e.moderatorId}</td>
-                        <td>{e.time}</td>
-                        <td>{e.comment}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+              <hr />
+              <ModeratorComments event={event} />
             </div>
             <div className="modal-footer">
               <button
@@ -159,7 +136,7 @@ const OrganizerMyEvents = () => {
   }, []);
   return (
     <div className="container">
-      <OrganizerNavbar id={id} />
+      <OrganizerNavbar />
       {loading ? (
         <Spinner />
       ) : events.length === 0 ? (
@@ -180,7 +157,7 @@ const OrganizerMyEvents = () => {
               <tr key={index}>
                 <th scope="row">{index + 1}</th>
                 <td>{e.name}</td>
-                <td>{(new Date(e.date)).toLocaleString().split(",")[0]}</td>
+                <td>{new Date(e.date).toLocaleString().split(",")[0]}</td>
                 <td>{e.status}</td>
                 <td>
                   <EventModal event={e} />
@@ -190,7 +167,7 @@ const OrganizerMyEvents = () => {
           </tbody>
         </table>
       )}
-      <OrganizerFooter id={id} />
+      <OrganizerFooter />
     </div>
   );
 };

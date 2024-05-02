@@ -11,16 +11,18 @@ const OrganizerEditEvent = () => {
   console.log(id, eventId);
   // useState and useEffect
   const [event, setEvent] = useState({});
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
-  console.log(event, user);
+  console.log(event);
   ///////////
   useEffect(() => {
     const fun = async () => {
       try {
-        let response = await axios.get(`http://localhost:5555/users/${id}`);
-        setUser(response.data);
-        response = await axios.get(`http://localhost:5555/events/${eventId}`);
+        // let response = await axios.get(`http://localhost:5555/users/${id}`);
+        // setUser(response.data);
+        const response = await axios.get(
+          `http://localhost:5555/events/${eventId}`
+        );
         setEvent(response.data);
         setLoading(false);
       } catch (error) {
@@ -58,7 +60,7 @@ const OrganizerEditEvent = () => {
 
   return (
     <div className="container">
-      <OrganizerNavbar id={id} />
+      <OrganizerNavbar />
       <h2>Edit Event</h2>
       {loading ? (
         <Spinner />
@@ -116,7 +118,7 @@ const OrganizerEditEvent = () => {
           </div>
         </form>
       )}
-      <OrganizerFooter id={id} />
+      <OrganizerFooter />
     </div>
   );
 };
