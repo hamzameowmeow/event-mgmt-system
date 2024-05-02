@@ -87,7 +87,7 @@ const EventModal = ({ event }) => {
                 </div>
               </form>
               <hr />
-              <ModeratorComments event={event} />
+              <ModeratorComments eventId={event._id} />
             </div>
             <div className="modal-footer">
               <button
@@ -137,6 +137,7 @@ const OrganizerMyEvents = () => {
   return (
     <div className="container">
       <OrganizerNavbar />
+      <h2>My Events</h2>
       {loading ? (
         <Spinner />
       ) : events.length === 0 ? (

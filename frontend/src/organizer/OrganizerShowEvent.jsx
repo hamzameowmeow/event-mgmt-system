@@ -5,6 +5,7 @@ import OrganizerFooter from "./components/OrganizerFooter";
 import axios from "axios";
 import Spinner from "../components/Spinner";
 import { Link } from "react-router-dom";
+import EventNotificationComponent from "../components/EventNotificationComponent";
 
 const ListOfParticipantModal = () => {
   const { eventId } = useParams();
@@ -112,25 +113,6 @@ const ListOfParticipantModal = () => {
 
 const EventNotifications = () => {
   const { eventId } = useParams();
-  const [event, setEvent] = useState({});
-  const [loading, setLoading] = useState(true);
-  console.log(event, loading);
-  useEffect(() => {
-    const fun = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5555/events/${eventId}`
-        );
-        console.log(response.data);
-        setEvent({ ...response.data });
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fun();
-  }, []);
-
   return (
     <>
       {/* Button trigger modal */}
@@ -152,7 +134,7 @@ const EventNotifications = () => {
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
@@ -168,32 +150,7 @@ const EventNotifications = () => {
               </button>
             </div>
             <div className="modal-body">
-              {loading ? (
-                <Spinner />
-              ) : event.notifications.length === 0 ? (
-                <div>No notifications yet.</div>
-              ) : (
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">Notification</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {event.notifications.map((e, index) => (
-                      <tr key={index}>
-                        <th scope="row">{index + 1}</th>
-                        <td>
-                          {new Date(e.time).toLocaleString().split(", ")[0]}
-                        </td>
-                        <td>{e.notification}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+              <EventNotificationComponent eventId={eventId} />
             </div>
             <div className="modal-footer">
               <button
@@ -237,19 +194,10 @@ const SendNotification = () => {
     }
     try {
       const d = new Date();
-      const notifications = [
-        ...event.notifications,
-        {
-          time: d.toISOString(),
-          notification: message,
-        },
-      ];
-      console.log(notifications.map((e) => e.time));
-      notifications.sort((a, b) => {
-        if (a.time > b.time) {
-          return -1;
-        }
-        return 1;
+      const notifications = [...event.notifications];
+      notifications.unshift({
+        time: d.toISOString(),
+        notification: message,
       });
       const response = await axios.put(
         `http://localhost:5555/events/${eventId}`,

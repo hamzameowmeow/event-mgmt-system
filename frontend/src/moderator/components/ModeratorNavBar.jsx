@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-const ModeratorNavbar = ({ id }) => {
+const ModeratorNavbar = () => {
+  const { id } = useParams();
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to={`/organizer/${id}`}>

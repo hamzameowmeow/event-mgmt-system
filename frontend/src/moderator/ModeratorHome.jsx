@@ -5,20 +5,7 @@ import axios from "axios";
 import ModeratorNavbar from "./components/ModeratorNavBar";
 import ModeratorFooter from "./components/ModeratorFooter";
 import Spinner from "../components/Spinner";
-
-const UserDetails = ({ user }) => {
-  return (
-    <div>
-      <h2>Hello, {user.name}</h2>
-      <h3>{user.role}</h3>
-      {Object.keys(user).map((key, index) => (
-        <div key={index}>
-          {key}: {user[key]}
-        </div>
-      ))}
-    </div>
-  );
-};
+import UserDetails from "../components/UserDetails";
 
 const ModeratorHome = () => {
   const [user, setUser] = useState({});
@@ -39,9 +26,9 @@ const ModeratorHome = () => {
   }, []);
   return (
     <div className="container">
-      <ModeratorNavbar id={id} />
+      <ModeratorNavbar />
       {loading ? <Spinner /> : <UserDetails user={user} />}
-      <ModeratorFooter id={id} />
+      <ModeratorFooter />
     </div>
   );
 };

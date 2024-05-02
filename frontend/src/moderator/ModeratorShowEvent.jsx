@@ -5,39 +5,10 @@ import ModeratorFooter from "./components/ModeratorFooter";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/Spinner";
+import ModeratorComments from "../components/ModeratorComments";
 
 const ModeratorCommentsModal = () => {
   const { eventId } = useParams();
-  const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fun = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5555/events/${eventId}`
-        );
-        const temp = await Promise.all(
-          response.data.comments.map(async (e) => {
-            const res = await axios.get(
-              `http://localhost:5555/users/${e.moderatorId}`
-            );
-            return {
-              ...e,
-              moderatorName: res.data.name,
-              moderatorEmail: res.data.email,
-            };
-          })
-        );
-        setComments(temp);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fun();
-  });
-
   return (
     <>
       {/* Button trigger modal */}
@@ -59,7 +30,7 @@ const ModeratorCommentsModal = () => {
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
@@ -75,32 +46,7 @@ const ModeratorCommentsModal = () => {
               </button>
             </div>
             <div className="modal-body">
-              {loading ? (
-                <Spinner />
-              ) : comments.length === 0 ? (
-                <div>No comments yet.</div>
-              ) : (
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Moderator Name</th>
-                      <th scope="col">Date and Time</th>
-                      <th scope="col">Comment</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {comments.map((e, index) => (
-                      <tr key={index}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{e.moderatorName}</td>
-                        <td>{new Date(e.time).toLocaleString()}</td>
-                        <td>{e.comment}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+              <ModeratorComments eventId={eventId} />
             </div>
             <div className="modal-footer">
               <button
@@ -144,19 +90,11 @@ const AddCommentModal = () => {
     }
     try {
       const d = new Date();
-      const comments = [
-        ...event.comments,
-        {
-          moderatorId: id,
-          time: d.toISOString(),
-          comment: message,
-        },
-      ];
-      comments.sort((a, b) => {
-        if (a.time > b.time) {
-          return -1;
-        }
-        return 1;
+      const comments = [...event.comments];
+      comments.unshift({
+        moderatorId: id,
+        time: d.toISOString(),
+        comment: message,
       });
       const response = await axios.put(
         `http://localhost:5555/events/${eventId}`,
@@ -284,7 +222,7 @@ const ModeratorShowEvent = () => {
   };
   return (
     <div className="container">
-      <ModeratorNavBar id={id} />
+      <ModeratorNavBar />
       <h2>Event Details</h2>
       {loading ? (
         <Spinner />

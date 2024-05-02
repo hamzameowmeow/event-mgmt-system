@@ -4,36 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import ModeratorNavbar from "./components/ModeratorNavBar";
 import ModeratorFooter from "./components/ModeratorFooter";
 import Spinner from "../components/Spinner";
+import ModeratorComments from "../components/ModeratorComments";
 
 const EventModal = ({ event }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const closeRef = useRef();
-  const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  ///
-  useEffect(() => {
-    const fun = async () => {
-      try {
-        const temp = await Promise.all(
-          event.comments.map(async (e) => {
-            const res = await axios.get(
-              `http://localhost:5555/users/${e.moderatorId}`
-            );
-            return {
-              ...e,
-              moderatorName: res.data.name,
-            };
-          })
-        );
-        setComments(temp);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fun();
-  }, []);
   const handleViewMore = () => {
     closeRef.current.click();
     navigate(`/moderator/${id}/show-event/${event._id}`);
@@ -59,7 +35,7 @@ const EventModal = ({ event }) => {
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
@@ -107,33 +83,7 @@ const EventModal = ({ event }) => {
                 </div>
                 <hr />
               </form>
-              <h5>Moderator Comments</h5>
-              {loading ? (
-                <Spinner />
-              ) : event.comments.length === 0 ? (
-                <div>No comments from moderators till now.</div>
-              ) : (
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Moderator Name</th>
-                      <th scope="col">Time</th>
-                      <th scope="col">Comment</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {comments.map((e, index) => (
-                      <tr key={index}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{e.moderatorName}</td>
-                        <td>{new Date(e.time).toLocaleString()}</td>
-                        <td>{e.comment}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+              <ModeratorComments eventId={event._id} />
             </div>
             <div className="modal-footer">
               <button
@@ -183,7 +133,7 @@ const ModeratorViewPendingEvents = () => {
   }, []);
   return (
     <div className="container">
-      <ModeratorNavbar id={id} />
+      <ModeratorNavbar />
       {loading ? (
         <Spinner />
       ) : (
@@ -219,7 +169,7 @@ const ModeratorViewPendingEvents = () => {
           )}
         </>
       )}
-      <ModeratorFooter id={id} />
+      <ModeratorFooter />
     </div>
   );
 };
