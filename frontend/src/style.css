@@ -1,12 +1,88 @@
 .me-md-2 {
   margin-right: 0.5rem !important;
 }
-
+*{
+  margin:0;
+}
 body {
-  /* background-color: #fff8ea;
-  color: black; */
+  background-image: url("pre-login/images/background.jpeg");
+  background-repeat: no-repeat;
+  background-attachment:scroll;
+  background-position: center;
+  background-size:cover;
+  padding: 0;
+  margin: 0;
+  
+ 
 }
 
 .homeImg {
   /* border-radius: 500px; */
+}
+.mainText{
+  margin-top: 200px;
+  font-size: 100px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: black;
+}
+.mainText p{
+  color: green;
+  font-size: 40px;
+  font-family: 'Times New Roman', Times, serif;
+}
+.navbar-brand{
+  font-size: 40px;
+  font-style: italic bold;
+}
+.navbar{
+  background-color: rgb(13, 15, 22);
+ 
+}
+.nav-text{
+  color: white;
+}
+.navwidth{
+  width: 100%;
+  border: ;
+}
+.text-green{
+  color: green;
+}
+.beta{
+  background-color: rgb(193, 209, 193);
+  width: 50%;
+  height: 500px;
+  border-radius: 20px;
+  padding: 30px;
+  color: azure;
+  margin-top: 150px;
+  
+  
+  
+}
+
+.footercss{
+  background-color: rgb(3, 43, 35);
+  height: 300x;
+  margin-bottom: 0px;
+  margin-top: 200px;
+  padding: 20px;
+  
+}
+.btn-one{
+  width: 200px;
+  margin-left: 250px;
+  margin-top: 30px;
+}
+.navbar{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  
+}
+.container-about{
+  margin-top: 200px;
+  background-color:rgb(193, 209, 193) ;
+  padding: 30px;
+  border-radius: 20px;
 }

@@ -6,10 +6,10 @@ const Contact = () => {
   return (
     <>
       <Navbar />
-      <div className="container mt-4">
+      <div className="container beta">
         <form>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
+            <label htmlFor="exampleInputEmail1">Email address*</label>
             <input
               type="email"
               className="form-control"
@@ -40,7 +40,7 @@ const Contact = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-success btn-one">
             Submit
           </button>
         </form>
@@ -49,5 +49,4 @@ const Contact = () => {
     </>
   );
 };
-
 export default Contact;

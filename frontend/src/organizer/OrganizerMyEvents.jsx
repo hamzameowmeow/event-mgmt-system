@@ -85,6 +85,7 @@ const EventModal = ({ event }) => {
                     readOnly
                   />
                 </div>
+                
               </form>
               <hr />
               <ModeratorComments eventId={event._id} />
@@ -100,6 +101,7 @@ const EventModal = ({ event }) => {
               <button onClick={handleEditEvent} className="btn btn-info">
                 Request Edit in Event
               </button>
+              <a href="./abc.html"><button>Budget</button></a>
               <button
                 onClick={handleShowParticipants}
                 className="btn btn-primary"
@@ -107,6 +109,7 @@ const EventModal = ({ event }) => {
               >
                 Show Participants
               </button>
+              
             </div>
           </div>
         </div>

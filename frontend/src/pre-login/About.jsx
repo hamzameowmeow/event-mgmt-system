@@ -6,7 +6,7 @@ const About = () => {
   return (
     <>
       <Navbar />
-      <div className="container mt-4">
+      <div className="container container-about">
         <div>
           You are on the About Page!
           <p>
